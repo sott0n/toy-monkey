@@ -65,8 +65,18 @@ func TestQuoteUnquote(t *testing.T) {
 			`(8 + 8)`,
 		},
 		{
-			`quote(unquote(4 + 4), 8)`,
+			`quote(unquote(4 + 4) + 8)`,
 			`(8 + 8)`,
+		},
+		{
+			`let foobar = 8;
+			quote(foobar)`,
+			`foobar`,
+		},
+		{
+			`let foobar = 8;
+			quote(unquote(foobar))`,
+			`8`,
 		},
 	}
 
@@ -83,8 +93,8 @@ func TestQuoteUnquote(t *testing.T) {
 		}
 
 		if quote.Node.String() != tt.expected {
-			t.Errorf("not equal. got=%q, want=%q",
-				quote.Node.String(), tt.expected)
+			t.Errorf("test %q is not equal. got=%q, want=%q",
+				tt.input, quote.Node.String(), tt.expected)
 		}
 	}
 }
